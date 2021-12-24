@@ -8,15 +8,12 @@ Criação de dashboards visualização das temperaturas e o clima.
 Esse projeto pode ajdar a criar soluções para o clima do nosso planeta combate o efeito estufa.
 
 
-
-
-  ![Logo](https://image.freepik.com/vetores-gratis/vetor-de-plano-de-fundo-de-mudanca-climatica-com-borda-de-nuvens-de-chuva_53876-112078.jpg)
+![Logo](https://image.freepik.com/vetores-gratis/vetor-de-plano-de-fundo-de-mudanca-climatica-com-borda-de-nuvens-de-chuva_53876-112078.jpg)
 
 
 ## Autores
 
 - [@RafaelGallo](https://github.com/RafaelGallo)
-
 
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
