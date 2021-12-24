@@ -1,3 +1,4 @@
+
 # Inteligência artificial no combate ao efeito estufa
 
 Projetos de machine learning aplicado temperatura clima e modelos machine learning, series temporais.
@@ -114,6 +115,7 @@ jupyter notebook
 
 
 ## 🚀 Sobre mim
+
 Cientista de dados
 
 
@@ -127,4 +129,13 @@ Cientista de dados
 - Additional browser support
 
 - Add more integrations
+
+
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's  `code of conduct`.
 
