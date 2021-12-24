@@ -1,20 +1,4 @@
-
 # Inteligência artificial no combate ao efeito estufa
-
-Projetos de machine learning aplicado temperatura clima e modelos machine learning, series temporais.
-Nesse projeto modelo preve a temperatura como previsão do clima. Os dados foi coletadas de estações metrológicas salvado em csv.
-Os modelos vai ser utilizado modelo de classificação, modelos estatisticos como series temporais em Python, R.
-Criação de dashboards visualização das temperaturas e o clima.
-Esse projeto pode ajdar a criar soluções para o clima do nosso planeta combate o efeito estufa.
-
-
-![Logo](https://image.freepik.com/vetores-gratis/vetor-de-plano-de-fundo-de-mudanca-climatica-com-borda-de-nuvens-de-chuva_53876-112078.jpg)
-
-
-## Autores
-
-- [@RafaelGallo](https://github.com/RafaelGallo)
-
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
@@ -37,6 +21,20 @@ Esse projeto pode ajdar a criar soluções para o clima do nosso planeta combate
 [![](https://img.shields.io/badge/Scikit_Learn-green.svg)](https://scikit-learn.org/stable/)
 [![](https://img.shields.io/badge/Numpy-white.svg)](https://numpy.org/)
 [![](https://img.shields.io/badge/PowerBI-red.svg)](https://powerbi.microsoft.com/pt-br/)
+
+Projetos de machine learning aplicado temperatura clima e modelos machine learning, series temporais.
+Nesse projeto modelo preve a temperatura como previsão do clima. Os dados foi coletadas de estações metrológicas salvado em csv.
+Os modelos vai ser utilizado modelo de classificação, modelos estatisticos como series temporais em Python, R.
+Criação de dashboards visualização das temperaturas e o clima.
+Esse projeto pode ajdar a criar soluções para o clima do nosso planeta combate o efeito estufa.
+
+
+![Logo](https://image.freepik.com/vetores-gratis/vetor-de-plano-de-fundo-de-mudanca-climatica-com-borda-de-nuvens-de-chuva_53876-112078.jpg)
+
+
+## Autores
+
+- [@RafaelGallo](https://github.com/RafaelGallo)
 
 
 ## Instalação 
