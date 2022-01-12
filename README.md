@@ -26,7 +26,7 @@ Projetos de machine learning aplicado temperatura clima e modelos machine learni
 Nesse projeto modelo preve a temperatura como previsão do clima. Os dados foi coletadas de estações metrológicas salvado em csv.
 Os modelos vai ser utilizado modelo de classificação, modelos estatisticos como series temporais em Python, R.
 Criação de dashboards visualização das temperaturas e o clima.
-Esse projeto pode ajdar a criar soluções para o clima do nosso planeta combate o efeito estufa.
+Esse projeto pode ajudar a criar soluções para o clima do nosso planeta combate o efeito estufa.
 
 
 ![Logo](https://image.freepik.com/vetores-gratis/vetor-de-plano-de-fundo-de-mudanca-climatica-com-borda-de-nuvens-de-chuva_53876-112078.jpg)
