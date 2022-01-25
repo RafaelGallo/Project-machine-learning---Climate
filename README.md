@@ -91,6 +91,7 @@ jupyter notebook
 
 | Dataset             | Link                                                                |
 | ----------------- | ------------------------------------------------------------------ |
+| Base de dados - CO2 Emissions |https://www.kaggle.com/yoannboyere/co2-ghg-emissionsdata|
 | Base de dados - Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
 | Base de dados - Earth Surface Temperature Data | https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data |
 | Base de dados - NOAA  | https://www.kaggle.com/ns0720/tempscsv |
