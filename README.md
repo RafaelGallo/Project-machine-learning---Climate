@@ -92,7 +92,7 @@ jupyter notebook
 
 | Nome             | Projeto                                                          |
 | ----------------- | ------------------------------------------------------------------ |
-| CO2 Emissions - | Data Analytics - Co2 |
+| CO2 Emissions | Data Analytics - Co2 |
 | Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
 | Earth Surface Temperature Data - | Série temporal R|
 | Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
