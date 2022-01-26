@@ -87,15 +87,16 @@ jupyter notebook
 - Machine learning
 - Dashboard
 - Series temporais
-## Base de dados 
 
-| Dataset             | Link                                                                |
+## Projeto ML Climate 
+
+| Nome             | Projeto                                                          |
 | ----------------- | ------------------------------------------------------------------ |
-| CO2 Emissions - OK |https://www.kaggle.com/yoannboyere/co2-ghg-emissionsdata|
+| CO2 Emissions - | Data Analytics - Co2 |
 | Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
-| Earth Surface Temperature Data - OK | https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data |
+| Earth Surface Temperature Data - | Série temporal R|
 | Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
-| NOAA - OK  | https://www.kaggle.com/ns0720/tempscsv |
+| NOAA - R| Modelo regressão linear - Previsão de Co2|
 | NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
 | NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
 
