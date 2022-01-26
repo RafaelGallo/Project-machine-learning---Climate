@@ -104,7 +104,7 @@ jupyter notebook
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://image.freepik.com/vetores-gratis/pessoas-com-conceito-de-sustentabilidade-ambiental_53876-66157.jpg)
 
 
 ## Documentation
