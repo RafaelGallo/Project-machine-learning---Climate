@@ -91,12 +91,13 @@ jupyter notebook
 
 | Dataset             | Link                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| Base de dados - CO2 Emissions |https://www.kaggle.com/yoannboyere/co2-ghg-emissionsdata|
-| Base de dados - Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
-| Base de dados - Earth Surface Temperature Data | https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data |
-| Base de dados - NOAA  | https://www.kaggle.com/ns0720/tempscsv |
-| Base de dados - NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
-| Base de dados - NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
+| CO2 Emissions - OK |https://www.kaggle.com/yoannboyere/co2-ghg-emissionsdata|
+| Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
+| Earth Surface Temperature Data | https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data |
+| Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
+| NOAA - OK  | https://www.kaggle.com/ns0720/tempscsv |
+| NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
+| NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
 
 
 
