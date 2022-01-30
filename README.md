@@ -96,7 +96,7 @@ jupyter notebook
 | Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
 | Earth Surface Temperature Data - | Série temporal R|
 | Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
-| Daily Climate | https://www.kaggle.com/sumanthvrao/daily-climate-time-series-data |
+| Daily Climate | Série temporal |
 | NOAA - R| Modelo regressão linear - Previsão de Co2|
 | NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
 | NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
