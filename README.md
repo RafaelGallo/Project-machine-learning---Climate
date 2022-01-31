@@ -111,19 +111,19 @@ library(forecast)
 library(ggplot2)
 
 # Base de dados online
-data <- load(url("https://userpage.fu-berlin.de/soga/300/30100_data_sets/Earth_Surface_Temperature.RData"))
-str(t.global)
+data <- read.csv("data.csv")
+str(data)
 
 # Dataset
-data <- t.global <- apply.yearly(t.global, mean)
+data <-data <- apply.yearly(data, mean)
 data
 
 # Temperatura Global puxando dados de 1800 até 2021
-temp <- t.global["1800/2017", 'Monthly.Anomaly.Global']
+temp <- data["1800/2017", 'Monthly.Anomaly.data']
 temp
 
 # Temperatura global puxando dados de 2001 até 2021
-temp_test <- t.global["2001/2016", 'Monthly.Anomaly.Global']
+temp_test <- data["2001/2016", 'Monthly.Anomaly.data']
 temp_test
 
 #### Série temporal - modelo
@@ -131,25 +131,23 @@ temp_test
 library(tseries)
 
 # Stationarity
-data <- kpss.test(temp.global)
-data
-
-train_temp <- temp.global.diff1 <- diff(temp.global)
+data <- kpss.test(temp.data)
+train_temp <- temp.data.diff1 <- diff(temp.data)
 train_temp
 
 # Stationarity - test
-data_test <- kpss.test(temp.global.diff1)
+data_test <- kpss.test(temp.data.diff1)
 data_test
 
 # Transformando em séries temporal
-lab_data <- BoxCox.lambda(temp.global)
-temp_train <- BoxCox(temp.global,lambda)
+lab_data <- BoxCox.lambda(temp.data)
+temp_train <- BoxCox(temp.data,lambda)
 temp_train
 
 # Gráfico dos anos
 library(dygraphs)
 
-dygraph(temp.global, main = " Co2") %>%
+dygraph(temp.data, main = " Co2") %>%
   dyAxis("x", drawGrid = TRUE) %>% dyEvent("2000-1-01", "2022", labelLoc = "bottom") %>% 
   dyEvent("2000-1-01", "1800", labelLoc = "bottom") %>% 
   dyEvent("2000-5-01", "2000", labelLoc = "bottom") %>% 
@@ -158,7 +156,7 @@ dygraph(temp.global, main = " Co2") %>%
 
 
 ## PACF
-p2 <- autoplot(Acf(temp.global.diff1, 
+p2 <- autoplot(Acf(temp.data.diff1, 
                    plot = F, 
                    lag.max = 15, 
                    type = 'partial')) + ggtitle('PACF')
@@ -168,35 +166,35 @@ p2
 ######### Modelo ARIMA ######### 
 
 # Modelo ARIMA 1
-model_arima_fit_1 <-Arima(temp.global, order = c(3, 1, 0))
+model_arima_fit_1 <-Arima(temp.data, order = c(3, 1, 0))
 model_arima_fit_1
 summary(model_arima_fit_1)
 
 checkresiduals(model_arima_fit_1)
 
 # Modelo ARIMA 2
-model_arima_fit_2 <- Arima(temp.global, order = c(3,1,1))
+model_arima_fit_2 <- Arima(temp.data, order = c(3,1,1))
 model_arima_fit_2      
 summary(model_arima_fit_2)      
 
 checkresiduals(model_arima_fit_2)
 
 # Modelo ARIMA 3
-model_arima_fit_3 <- Arima(temp.global, order = c(3,1,2))
+model_arima_fit_3 <- Arima(temp.data, order = c(3,1,2))
 model_arima_fit_3      
 summary(model_arima_fit_3)         
 
 checkresiduals(model_arima_fit_3)
 
 # Modelo ARIMA 4
-model_arima_fit_4 <- Arima(temp.global, order = c(2,1,2))
+model_arima_fit_4 <- Arima(temp.data, order = c(2,1,2))
 model_arima_fit_4      
 summary(model_arima_fit_4)
 
 checkresiduals(model_arima_fit_4)
 
 # Modelo auto arima
-model_arima_fit <- auto.arima(temp.global, seasonal = F)
+model_arima_fit <- auto.arima(temp.data, seasonal = F)
 model_arima_fit
 summary(model_arima_fit)
 
@@ -213,7 +211,7 @@ g1_test <- Box.test(residuals(model_arima_fit),
 g1_test
 
 # Previsão temperatura
-model_predict <- predict(arima(temp.global, order = c(4,4,5)), n.ahead = 50)
+model_predict <- predict(arima(temp.data, order = c(4,4,5)), n.ahead = 50)
 model_predict
 
 # Gráfico 1 - Previsão Co2
@@ -222,8 +220,8 @@ autoplot(forecast(model_arima_fit, h=50, title = "Revisão Co2",
                   ylab = "Co2"))
 
 # Gráfico 2 - Previsão Co2
-plot(forecast(Arima(y = temp.global, order = c(1, 1, 2))))
-plot(forecast(Arima(y = temp.global, order = c(3, 3, 4))))
+plot(forecast(Arima(y = temp.data, order = c(1, 1, 2))))
+plot(forecast(Arima(y = temp.data, order = c(3, 3, 4))))
 
 
 # Gráfico 3 - Previsão das têmperaturas
