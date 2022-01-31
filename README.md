@@ -236,8 +236,8 @@ lines(ts(coredata(temp.global.test),
 | Nome             | Projeto                                                          |
 | ----------------- | ------------------------------------------------------------------ |
 | Data Analytics - Co2|[CO2 Emission](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/CO2%20Emissions/Data%20Analytics%20-%20Co2.ipynb) |
-| Série Temporal - Effect Greenhouse|[Effect Greenhouse](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/R/S%C3%A9rie%20temporal%20Co2.r)|
-| Série Temporal - Climate| [Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Daily%20Climate/Climate%20-%20time%20series.ipynb)|
+| Série Temporal R - Effect Greenhouse|[Effect Greenhouse](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/R/S%C3%A9rie%20temporal%20Co2.r)|
+| Série Temporal Python auto arima - Climate| [Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Daily%20Climate/Climate%20-%20time%20series.ipynb)|
 | Modelo regressão linear - NOAA Climate | [NOAA Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOOA/NOAA%20Climate.ipynb)|
 | Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
 | Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
