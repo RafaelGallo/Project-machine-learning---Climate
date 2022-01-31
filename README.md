@@ -92,12 +92,11 @@ jupyter notebook
 
 | Nome             | Projeto                                                          |
 | ----------------- | ------------------------------------------------------------------ |
-| CO2 Emissions | Data Analytics - Co2 |
+| Data Analytics - Co2|[CO2 Emission](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/CO2%20Emissions/Data%20Analytics%20-%20Co2.ipynb) |
+| Série Temporal R - Effect Greenhouse|[Effect Greenhouse](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/R/S%C3%A9rie%20temporal%20Co2.r)|
+| Modelo regressão linear - NOAA Climate | [NOAA Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOOA/NOAA%20Climate.ipynb)|
 | Temperature change  | https://www.kaggle.com/sevgisarac/temperature-change/code|
-| Earth Surface Temperature Data - | Série temporal R|
 | Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
-| Daily Climate | Série temporal |
-| NOAA - R| Modelo regressão linear - Previsão de Co2|
 | NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
 | NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
 
