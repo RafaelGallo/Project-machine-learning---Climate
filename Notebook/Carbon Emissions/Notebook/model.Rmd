@@ -1,0 +1,352 @@
+---
+title: "Projeto previsão temperatura ARIMA"
+output: html_notebook
+---
+
+**Projeto previsão temperatura ARIMA**
+
+1.Introdução
+
+2.Conjunto de dados de série temporal
+
+3.Importar bibliotecas
+
+4.Recuperação e visualização de conjuntos de dados de séries temporais
+
+- 5.Análise de emissão de CO2 de gás natural 5.1 Teste estacionário
+- 5.1.1 Teste graficamente estacionário
+- 5.1.2 Teste de estacionariedade usando o teste Dickey-Fuller
+- 5.1.3 Transforme o conjunto de dados em estacionário
+
+6.Encontre os parâmetros ideais e construa o modelo SARIMA
+
+7.Validando a previsão
+
+8.Previsão
+
+9.Conclusão
+
+# 1) Introdução
+
+A série temporal é uma coleção de pontos de dados que são coletados em intervalos de tempo constantes. É um problema dinâmico ou dependente do tempo com ou sem tendência crescente ou decrescente, sazonalidade. A modelagem de séries temporais é um método poderoso para descrever e extrair informações de dados baseados em tempo e ajudar a tomar decisões informadas sobre resultados futuros.
+
+Este notebook explora como recuperar conjuntos de dados de séries temporais csv, visualizando conjuntos de dados de séries temporais, como transformar conjuntos de dados em séries temporais, testando se a série temporal é estacionária ou não usando métodos estatísticos de teste gráficos e Dickey-Fuller, como transformar séries temporais em estacionárias , como encontrar os parâmetros ideais para construir o modelo de Média Móvel Integrada Autoregressiva sazonal (SARIMA) usando o método de pesquisa de grade, diagnosticar a previsão de séries temporais, validar a potência preditiva, prever a emissão futura de CO2 de 10 anos da geração de energia usando gás natural.,
+
+# 2) Conjunto de dados de série temporal
+
+Eu uso um conjunto de dados públicos de emissões mensais de dióxido de carbono da geração de eletricidade disponível na Energy Information Administration e Jason McNeill. O conjunto de dados inclui as emissões de CO2 de cada recurso energético de janeiro de 1973 a julho de 2016 para referência clique aqui.
+
+# 3) Importação das bibliotecas
+```{r}
+#install.packages("summarytools")
+library(forecast)
+library(ggplot2)
+library(tseries)
+library(summarytools)
+
+```
+# 4) Recuperação e visualização de conjuntos de dados de séries temporais
+
+Primeiro, nas células a seguir, recuperaremos o conjunto de dados de emissões mensais de CO2 e, em seguida, visualizaremos o conjunto de dados para decidir o tipo de modelo que usaremos para modelar e analisar nossa série temporal (ts).
+
+
+# Carregando base dados
+```{r}
+library(readr)
+
+df <- read_csv("GlobalTemperatures.csv")
+
+# Visualizando os 5 primeiros dados
+head(df)
+```
+# Visualizando os cinco últimos dados
+```{r}
+tail(df)
+```
+# Visualizando linhas e colunas
+```{r}
+dim(df)
+
+```
+# Classes dos dados
+```{r}
+class(df)
+```
+# Súmario dos dados
+```{r}
+summary(df)
+```
+# Data frame dos dados
+```{r}
+as.data.frame(df)
+```
+# Váriaveis e info dos dados
+```{r}
+str(df)
+```
+# Definindo data, dia, ano
+
+O dataset possui 8 colunas onde 2 delas são do tipo inteiro e 4 objetos e 5096 observações. O método de recuperação do conjunto de dados acima apenas recupera o conjunto de dados como um quadro de dados que não é um conjunto de dados de série temporal. Para ler o conjunto de dados como uma série temporal, temos que passar argumentos especiais para o comando read_csv conforme indicado abaixo.
+```{r}
+df$dt<-as.Date(df$dt,format="yyyy-mm-dd")
+
+head(df)
+tail(df)
+```
+- A soma total das emissões de CO2 de cada grupo de energia para cada ano é dada como uma observação que pode ser visualizada na linha NaT. Então, vamos primeiro identificar e descartar as linhas não datetimeindex e também usar ts para fazer referência ao conjunto de dados da série temporal em vez do dataframe df. Primeiro, vamos converter o índice para data e hora, coagir erros e filtrar NaT
+
+# 4.2 Visualização do conjunto de dados de série temporal
+
+- O conjunto de dados possui 8 fontes de energia de emissão de CO2. Na célula a seguir, agruparemos o conjunto de dados de emissões de CO2 com base no tipo de fonte de energia.
+
+- Gráfico histograma
+- Distribuição da Temperatura Média
+
+- O conjunto de dados de séries temporais de emissão de CO2 é plotado para visualizar a dependência da emissão na geração de energia com o tempo.
+```{r}
+options(repr.plot.width=4, repr.plot.height=4)
+
+ggplot(df,aes(x=LandAverageTemperature))+
+  geom_histogram(aes(y=..density..),fill="blue")+geom_density(col="red")
+```
+# 4.3 Gráfico de linhas de emissões de CO2 por fonte de energia
+```{r}
+options(repr.plot.width=5, repr.plot.height=5)
+
+temp <- ts(df[,2],start=c(1980,1),end=c(2015,12),frequency=12)
+autoplot(temp)
+```
+
+# 5.1 Teste Estacionário
+
+A primeira coisa que precisamos fazer é produzir um gráfico de nosso conjunto de dados de série temporal. A partir do enredo, teremos uma ideia sobre a tendência geral e a sazonalidade da série. Em seguida, usaremos um método estatístico para avaliar a tendência e a sazonalidade do conjunto de dados. Depois que a tendência e a sazonalidade forem avaliadas se estiverem presentes no conjunto de dados, elas serão removidas da série para transformar o conjunto de dados não estacionário em estacionário e os resíduos serão posteriormente analisados.
+
+Um breve resumo sobre estacionariedade da Wikipedia: Um processo estacionário é um processo estocástico cuja distribuição de probabilidade conjunta incondicional não muda quando deslocada no tempo. Consequentemente, parâmetros como média e variância, se estiverem presentes, também não mudam ao longo do tempo.
+
+A estacionaridade é uma suposição subjacente a muitos procedimentos estatísticos usados ​​na análise de séries temporais, dados não estacionários são frequentemente transformados para se tornarem estacionários. A causa mais comum de violação da estacionaridade é uma tendência na média, que pode ser devido à presença de uma raiz unitária ou de uma tendência determinística. Se a não estacionariedade é causada pela presença de raiz unitária, os choques estocásticos têm efeitos permanentes e o processo não é reverso à média. No entanto, se for causado por uma tendência determinística, o processo é chamado de processo de tendência estacionária, e os choques estocásticos têm apenas efeitos transitórios, após os quais a variável tende a uma média de evolução determinística.
+
+Um processo estacionário de tendência não é estritamente estacionário, mas pode ser facilmente transformado em um processo estacionário removendo a tendência subjacente, que é apenas uma função do tempo. Da mesma forma, processos com uma ou mais raízes unitárias podem se tornar estacionários por meio da diferenciação. Um tipo importante de processo não estacionário que não inclui um comportamento de tendência é um processo cicloestacionário, que é um processo estocástico que varia ciclicamente com o tempo.
+
+Nota: Dadas duas variáveis ​​aleatórias distribuídas conjuntamente X e Y, a distribuição de probabilidade condicional de Y dado X é a distribuição de probabilidade de Y quando X é conhecido como um valor particular.
+
+```{r}
+ggseasonplot(temp)
+```
+# 5.1.2 Teste estacionário usando Dickey-Fuller
+
+Uma maneira formal de testar a estacionariedade de um conjunto de dados é usar a plotagem da média móvel ou variância móvel e ver se a média e a variância da série variam com o tempo. Essa abordagem será tratada pelo método TestStationaryPlot(). A segunda maneira de testar a estacionariedade é usar o teste estatístico (o Teste Dickey-Fuller). A hipótese nula para o teste é que a série temporal é não estacionária. Os resultados do teste comparam uma estatística de teste e valores críticos (valor de corte) em diferentes níveis de confiança. Se a ‘Estatística de Teste’ for menor que o ‘Valor Crítico’, podemos rejeitar a hipótese nula e dizer que a série é estacionária. Essa técnica será tratada pelo método TestStationaryAdfuller( ) fornecido abaixo.
+
+```{r}
+ggseasonplot(temp, polar = TRUE)
+```
+A média das emissões e a variação do desvio padrão (linha preta) variam claramente com o tempo. Isso mostra que a série tem uma tendência. Portanto, não é estacionário. Além disso, a estatística de teste é maior que os valores críticos com níveis de confiança de 90%, 95% e 99%. Portanto, nenhuma evidência para rejeitar a hipótese nula. Portanto, a série é não estacionária.
+
+# 5.1.3 Transforme o conjunto de dados em estacionário
+
+As técnicas mais comuns usadas para estimar ou modelar a tendência e depois removê-la da série temporal são
+
+- Agregação – tomando a média por um período de tempo como a média mensal/semanal
+- Suavização – tirando médias rolantes
+- Ajuste polinomial - ajuste um modelo de regressão
+
+```{r}
+ggsubseriesplot(temp)
+```
+
+# A) Média móvel
+
+Nesta técnica, tomamos a média de 'k' valores consecutivos dependendo da frequência da série temporal (neste caso 12 meses por ano). Aqui, tomaremos a média do último 1 ano.
+
+# Gráfico geral
+```{r}
+gglagplot(temp)
+```
+
+A linha vermelha mostra a média móvel. Subtraia a média móvel da série original. Observe que, como estamos obtendo a média dos últimos 12 valores, a média móvel não é definida para os primeiros 11 valores.
+
+# ACF dos dados
+```{r}
+ggAcf(temp)
+```
+
+# Previsão seasonal das temperaturas
+
+Os valores médios de rolamento parecem estar variando ligeiramente. A estatística de teste é menor que os 10% 5% e 1% dos valores críticos. Assim, podemos dizer com um nível de confiança de 99% que o conjunto de dados é uma série estacionária.
+
+# B). Média móvel ponderada exponencial
+
+**Outra técnica é usar a 'média móvel ponderada', onde os valores mais recentes recebem um peso maior. O método popular para atribuir os pesos é usar a média móvel ponderada exponencial. Nesta técnica, os pesos são atribuídos a todos os valores anteriores com um fator de decaimento.**
+
+```{r}
+temp<-snaive(temp,h = 36)
+autoplot(temp)
+```
+
+Esta série temporal apresenta menores variações na média e no desvio padrão em comparação com o conjunto de dados original. Além disso, a estatística de teste é menor que o valor crítico de 5% e 10%, o que é melhor que o caso original. Não haverá valores ausentes, pois todos os valores iniciais recebem pesos. Portanto, funcionará mesmo sem valores anteriores. Neste caso, podemos dizer com nível de confiança de 95% que a série é uma série estacionária.
+
+# C) Eliminando tendência e sazonalidade: Diferenciando
+
+Um dos métodos mais comuns de lidar com tendência e sazonalidade é a diferenciação. Nesta técnica, tomamos a diferença da observação original em um determinado instante com a do instante anterior. Isso geralmente funciona bem para melhorar a estacionariedade. A diferenciação de primeira ordem pode ser feita da seguinte forma:
+
+```{r}
+summary(temp)
+```
+
+A primeira diferença melhora significativamente a estacionariedade da série. Vamos usar também a diferença sazonal para remover a sazonalidade dos dados e ver como isso afeta a estacionariedade dos dados.
+
+Em comparação com os dados originais, a diferença sazonal também melhora a estacionariedade da série. O próximo passo é tirar a primeira diferença da diferença sazonal.
+
+Agora, se observarmos a estatística de teste e o valor p, a primeira diferença sazonal tornou o conjunto de dados da série temporal estacionário. Esse procedimento de diferenciação pode ser repetido para os valores de log, mas não tornou o conjunto de dados mais estacionário.
+
+# D) Eliminando tendência e sazonalidade: Decompondo
+
+Nesta técnica, comece modelando a tendência e a sazonalidade e removendo-as do modelo.
+
+```{r}
+checkresiduals(temp)
+```
+# Modelo ARIMA 
+
+# 6) Encontre os parâmetros ideais e construa o modelo SARIMA
+
+Ao procurar ajustar o conjunto de dados de séries temporais com o modelo ARIMA sazonal, nosso primeiro objetivo é encontrar os valores de SARIMA(p,d,q)(P,D,Q)s que otimizam nossa métrica de interesse. Antes de passar diretamente como encontrar os valores ótimos dos parâmetros vamos ver as duas situações em estacionaridades: Uma série estritamente estacionária sem dependência entre os valores. Este é o caso fácil em que podemos modelar os resíduos como ruído branco. O segundo caso é uma série com dependência significativa entre valores e necessita de modelos estatísticos como ARIMA para prever resultados futuros.
+
+**Média Móvel Integrada Auto-Regressiva (ARIMA):** A previsão ARIMA para uma série temporal estacionária é uma função linear semelhante à regressão linear. Os preditores dependem principalmente dos parâmetros (p,d,q) do modelo ARIMA:
+
+- **Número de termos auto-regressivos (AR) (p):** Os termos AR são apenas defasagens da variável dependente. Por exemplo, se p é 4, os preditores para x(t) dependerão de x(t-1)….x(t-4). Este termo nos permite incorporar o efeito de valores passados ​​em nosso modelo. Isso seria semelhante a afirmar que o clima provavelmente estará quente amanhã se estiver quente nos últimos 4 dias.
+
+
+- **Número de termos de Média Móvel (MA) (q):** Os termos de MA são erros de previsão defasados ​​na função de previsão. Este termo nos permite definir o erro do nosso modelo como uma combinação linear dos valores de erro observados em pontos de tempo anteriores no passado. Por exemplo, se q é 4, os preditores para x(t) serão e(t-1)….e(t-4) onde e(i) é a diferença entre a média móvel no instante i e o valor real.
+
+
+- **Número de Diferenças (d):** São o número de diferenças não sazonais, ou seja, se tomarmos a diferença de primeira ordem. Então ou podemos passar a variável de diferença de primeira ordem e colocar d=0 ou passar a variável observada original e colocar d=1. Ambos irão gerar os mesmos resultados. Este termo explica o número de pontos de tempo passados ​​a serem subtraídos do valor atual. Isso seria semelhante a afirmar que é provável que amanhã seja a mesma temperatura se a diferença de temperatura nos últimos três dias tiver sido muito pequena.
+
+# 6.1 Plote os gráficos ACF e PACF e encontre os parâmetros ideais
+
+- Função de Autocorrelação (ACF): É uma medida da correlação entre a série temporal (ts) com uma versão defasada dela mesma. Por exemplo, no atraso 4, o ACF compararia a série no instante de tempo 't1'...'t2' com a série no instante 't1-4'...'t2-4' (t1-4 e t2 sendo pontos finais do intervalo).
+
+- Função de Autocorrelação Parcial (PACF): Mede a correlação entre o ts com uma versão defasada de si mesmo, mas após eliminar as variações já explicadas pelas comparações intervenientes. Por exemplo. no lag 4, ele verificará a correlação, mas removerá os efeitos já explicados pelos lags 1 a 3.
+
+Portanto, o próximo passo será determinar os parâmetros de sintonia (p e q) do modelo observando os gráficos de autocorrelação e autocorrelação parcial. O gráfico abaixo fornece um breve guia sobre como ler os gráficos de autocorrelação e autocorrelação parcial para selecionar os parâmetros.
+```{r}
+model_fit<-auto.arima(temp_ts,lambda=0)
+d<-1
+D<-1
+model_fit
+```
+6.2 Grid search¶
+Encontrar os parâmetros ótimos para modelos ARIMA usando o método gráfico não é trivial e é demorado. Vamos selecionar os valores dos parâmetros ótimos sistematicamente usando o método de busca em grade (otimização de hiperparâmetros). A pesquisa em grade explora iterativamente diferentes combinações dos parâmetros. Para cada combinação de parâmetros, ajustaremos um novo modelo ARIMA sazonal com a função SARIMAX() do módulo statsmodels e avaliaremos sua qualidade geral. Uma vez que tenhamos explorado todo o cenário de parâmetros, nosso conjunto ótimo de parâmetros será aquele que produzirá o melhor desempenho para nossos critérios de interesse.
+
+Nota: intervalos maiores de parâmetros p, d, q resultam em tempo de busca exponencialmente maior. Se você tentar mais de 2, esteja preparado para esperar. Encontrei melhores resultados de AIC com maior faixa de valor, mas o modelo final é essencialmente o mesmo.
+
+Vamos começar gerando as várias combinações de parâmetros que desejamos avaliar.
+```{r}
+summary(model_fit)
+```
+Ao avaliar e comparar modelos estatísticos ajustados com parâmetros diferentes, cada um pode ser classificado em relação ao outro com base em quão bem ele se ajusta aos dados ou em sua capacidade de prever com precisão pontos de dados futuros. Usaremos o valor AIC (Akaike Information Criterion), que é convenientemente retornado com modelos ARIMA ajustados usando statsmodels. O AIC mede quão bem um modelo se ajusta aos dados, levando em consideração a complexidade geral do modelo. Um modelo que se ajusta muito bem aos dados ao usar muitos recursos receberá uma pontuação AIC maior do que um modelo que usa menos recursos para obter a mesma qualidade de ajuste. Portanto, estamos interessados em encontrar o modelo que produz o menor valor de AIC.
+
+O argumento order especifica os parâmetros (p, d, q), enquanto o argumento season_order especifica o componente sazonal (P, D, Q, S) do modelo Seasonal ARIMA. Após ajustar cada modelo SARIMAX(), o código imprime sua respectiva pontuação AIC.
+```{r}
+fit %>%forecast(h=36)%>%autoplot()
+```
+Dependendo da sua plataforma e versão do statsmodel, algumas chamadas fit() podem não convergir.
+
+SARIMAX(1, 1, 1)x(0, 1, 1, 12) produz o valor AIC mais baixo de 2003,553. Portanto, consideraremos esta como a opção ideal de todas as combinações de parâmetros. Identificamos o conjunto de parâmetros que produz o melhor modelo de ajuste para nossos dados de série temporal. Podemos continuar a analisar esse modelo específico com mais profundidade.
+
+```{r}
+checkresiduals(model_fit)
+```
+
+A coluna coef mostra o peso (ou seja, importância) de cada recurso e como cada um afeta a série temporal. O P>|z| coluna nos informa sobre o significado de cada peso de recurso. Aqui, cada peso tem um valor de p próximo a 0, então é razoável incluir os recursos em nosso modelo.
+
+Ao ajustar modelos ARIMA sazonais, é importante executar o diagnóstico do modelo para garantir que nenhuma das suposições feitas pelo modelo foi violada. Primeiro, obtemos um gráfico de linha dos erros residuais, sugerindo que ainda pode haver algumas informações de tendência não capturadas pelo modelo.
+```{r}
+print(paste('ARIMA(3,1,0) - AICc: ', round(fit$aicc,2)))
+```
+
+A figura mostra a distribuição dos erros residuais. Isso mostra um pouco de viés na previsão. Em seguida, obtemos um gráfico de densidade dos valores de erro residual, sugerindo que os erros são gaussianos, mas podem não estar centrados em zero.
+
+```{r}
+fit.test <- Arima(temp_ts, order = c(3,1,1))
+print(paste('ARIMA(3,1,1) - AICc: ', round(fit.test$aicc,2)))
+```
+O objeto plot_diagnostics nos permite gerar diagnósticos de modelo rapidamente e investigar qualquer comportamento incomum.
+```{r}
+fit.test <- Arima(temp_ts, order = c(3,1,2))
+print(paste('ARIMA(3,1,2) - AICc: ', round(fit.test$aicc,2)))
+```
+
+# Modelo 2 ARIMA
+```{r}
+fit.test <- Arima(temp_ts, order = c(2,1,2))
+print(paste('ARIMA(2,1,2) - AICc: ', round(fit.test$aicc,2)))
+```
+
+# Modelo 3 ARIMA
+```{r}
+fit.auto <- auto.arima(temp_ts, seasonal = F)
+summary(fit.auto)
+```
+
+# residuals
+```{r}
+Acf(residuals(fit.auto))
+```
+
+# Modelo residuals
+```{r}
+Btest <- Box.test(residuals(fit.auto), 
+                  lag = 10, 
+                  fitdf = 6, 
+                  type = "Ljung")
+Btest
+```
+
+Nossa principal preocupação é garantir que os resíduos do nosso modelo sejam não correlacionados e normalmente distribuídos com média zero. Se o modelo sazonal ARIMA não satisfizer essas propriedades, é uma boa indicação de que pode ser melhorado ainda mais.
+
+O diagnóstico do modelo sugere que o resíduo do modelo é normalmente distribuído com base no seguinte:
+
+- No gráfico superior direito, a linha vermelha do KDE segue de perto com a linha N(0,1). Onde, N(0,1) é a notação padrão para uma distribuição normal com média 0 e desvio padrão de 1. Esta é uma boa indicação de que os resíduos são normalmente distribuídos. Os erros de previsão se desviam um pouco da linha reta, indicando que a distribuição normal não é um modelo perfeito para a distribuição de erros de previsão, mas não é irracional.
+
+- O gráfico qq no canto inferior esquerdo mostra que a distribuição ordenada dos resíduos (pontos azuis) segue a tendência linear das amostras retiradas de uma distribuição normal padrão. Novamente, esta é uma forte indicação de que os resíduos são normalmente distribuídos.
+
+- Os resíduos ao longo do tempo (gráfico superior esquerdo) não exibem nenhuma sazonalidade óbvia e parecem ser ruído branco. Isso é confirmado pelo gráfico de autocorrelação (ou seja, correlograma) no canto inferior direito, que mostra que os resíduos da série temporal têm baixa correlação com versões defasadas de si mesmo.
+
+Essas observações nos levam a concluir que nosso modelo produz um ajuste satisfatório que pode nos ajudar a entender nossos dados de séries temporais e prever valores futuros.
+
+# 7) Validando a previsão
+
+Obtivemos um modelo para nossa série temporal que agora pode ser usado para produzir previsões. Começamos comparando os valores previstos com os valores reais da série temporal, o que nos ajudará a entender a precisão de nossa previsão. Os atributos get_prediction() e conf_int() permitem obter os valores e intervalos de confiança associados para previsões da série temporal.
+
+O argumento dynamic=False garante que produzamos previsões um passo à frente, o que significa que as previsões em cada ponto são geradas usando o histórico completo até aquele ponto.
+
+Podemos traçar os valores reais e previstos da série temporal de emissões de CO2 para avaliar o quão bem o modelo se ajusta.
+
+No geral, nossas previsões se alinham muito bem com os valores reais, mostrando um comportamento geral semelhante.
+
+Também é útil quantificar a precisão de nossas previsões. Usaremos o MSE (Mean Squared Error), que resume o erro médio de nossas previsões. Para cada valor previsto, calculamos sua distância até o valor verdadeiro e elevamos o resultado ao quadrado. Os resultados precisam ser elevados ao quadrado para que as diferenças positivas/negativas não se anulem.
+
+O objetivo de desenvolver o modelo é obter um poder preditivo de boa qualidade usando a previsão dinâmica. Ou seja, usamos as informações da série temporal até um determinado ponto, e depois disso, as previsões são geradas usando valores de pontos temporais previstos anteriores da seguinte forma:
+
+A partir da plotagem dos valores observados e previstos da série temporal, vemos que as previsões gerais são precisas mesmo quando usamos a previsão dinâmica. Todos os valores previstos (linha vermelha) correspondem de perto aos dados observados originais (linha azul) e estão bem dentro dos intervalos de confiança de nossa previsão.
+
+# 8) Previsão
+
+Podemos usar a saída desse código para traçar a série temporal e as previsões de seus valores futuros.
+```{r}
+# pot forecast
+temp.forecast <- forecast(fit.auto, h = 16)
+plot(temp.forecast)
+
+
+```
+
+Tanto a previsão quanto o intervalo de confiança associado que geramos agora podem ser usados para explorar e entender melhor a série temporal. A previsão mostra que a emissão de CO2 da geração de energia a gás natural deverá continuar aumentando.
+
+# 9) Conclusão
+
+Neste caderno, explorei como recuperar o conjunto de dados CSV, como transformar o conjunto de dados em séries temporais, testando se a série temporal é estacionária ou não usando métodos estatísticos de teste gráficos e Dickey-Fuller, como transformar séries temporais em estacionárias, como encontrar os parâmetros ideais para construir o modelo SARIMA usando o método de pesquisa de grade, diagnosticar a previsão de séries temporais, validar a potência preditiva, prever a emissão futura de CO2 de 10 anos da geração de energia usando gás natural.
+
+Trabalho futuro: desenvolvimento de um modelo de séries temporais de previsão de gás natural
+
+Sugestões, comentários e perguntas são bem-vindos!
