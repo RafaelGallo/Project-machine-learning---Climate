@@ -37,6 +37,19 @@ Esse projeto pode ajudar a criar soluções para o clima do nosso planeta combat
 - [@RafaelGallo](https://github.com/RafaelGallo)
 
 
+## Projeto ML Climate 
+
+| Nome             | Projeto                                                          |
+| ----------------- | ------------------------------------------------------------------ |
+| Data Analytics - Co2|[CO2 Emission](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/CO2%20Emissions/Data%20Analytics%20-%20Co2.ipynb) |
+| Série Temporal R - Effect Greenhouse|[Effect Greenhouse](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/R/S%C3%A9rie%20temporal%20Co2.r)|
+| Série Temporal Python auto arima - Climate| [Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Daily%20Climate/Climate%20-%20time%20series.ipynb)|
+| Modelo regressão linear - NOAA Climate | [NOAA Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOOA/NOAA%20Climate.ipynb)|
+| Série Temporal Python auto arima - Temperature change | [Temperature - model](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Temperature%20change/Models/Model%20-%20Temperature%20change.ipynb)|
+| Carbon Emissions| [Co2 Carbon Emissions]https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Carbon%20Emissions/ARIMA%20Co2.ipynb |
+| NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
+| NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
+
 ## Instalação 
 
 Instalação das bibliotecas para esse projeto no python.
@@ -231,20 +244,6 @@ lines(ts(coredata(temp.global.test),
          start = start(temp.forecast$mean)[1],
          frequency = 1), col = 'magenta', main = "Co2")
 ```
-## Projeto ML Climate 
-
-| Nome             | Projeto                                                          |
-| ----------------- | ------------------------------------------------------------------ |
-| Data Analytics - Co2|[CO2 Emission](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/CO2%20Emissions/Data%20Analytics%20-%20Co2.ipynb) |
-| Série Temporal R - Effect Greenhouse|[Effect Greenhouse](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/R/S%C3%A9rie%20temporal%20Co2.r)|
-| Série Temporal Python auto arima - Climate| [Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Daily%20Climate/Climate%20-%20time%20series.ipynb)|
-| Modelo regressão linear - NOAA Climate | [NOAA Climate](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOOA/NOAA%20Climate.ipynb)|
-| Série Temporal Python auto arima - Temperature change | [Temperature - model](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Temperature%20change/Models/Model%20-%20Temperature%20change.ipynb)|
-| Carbon Emissions| https://www.kaggle.com/txtrouble/carbon-emissions |
-| NOAA Global Historical Climatology Network | https://www.kaggle.com/noaa/global-historical-climatology-network|
-| NOAA Severe Weather Data Inventory | https://www.kaggle.com/noaa/severe-weather-data-inventory|
-
-
 
 ## Screenshots
 
