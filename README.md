@@ -49,6 +49,7 @@ Esse projeto pode ajudar a criar soluções para o clima do nosso planeta combat
 | Carbon Emissions| [Co2_Carbon](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Carbon%20Emissions/ARIMA%20Co2.ipynb)|
 | NOAA Global Historical Climatology Network | [NOAA Global](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOOA/NOAA%20Climate.ipynb)|
 | NOAA Severe Weather| [NOAA Severe Weather](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/NOAA%20Rede%20Global%20de%20Climatologia%20Hist%C3%B3rica/Modelo%20de%20regress%C3%A3o%20linear%20de%20tempo%20-%20NOAA%20Rede%20Global%20de%20Climatologia.ipynb)|
+|Climate Change Sentiment NLP|[Link](https://github.com/RafaelGallo/Project-machine-learning---Climate/blob/main/Notebook/Climate%20NLP/model_sentiment_climate.ipynb)|
 
 ## Instalação 
 
